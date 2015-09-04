@@ -9,8 +9,8 @@ Pod::Spec.new do |s|
   s.homepage     = 'http://aws.amazon.com/sdkforios'
   s.license      = 'Apache License, Version 2.0'
   s.author       = { 'Amazon Web Services' => 'amazonwebservices' }
-  s.platform     = :ios, '7.0'
-  s.source       = { :git => 'https://github.com/aws/aws-sdk-ios.git',
+  s.platform     = :osx, '10.10'
+  s.source       = { :git => 'https://github.com/nickoneill/aws-sdk-ios.git',
                      :tag => s.version}
   s.frameworks   = 'UIKit', 'Foundation', 'SystemConfiguration'
   s.libraries    = 'z', 'sqlite3'
