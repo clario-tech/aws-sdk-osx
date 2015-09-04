@@ -17,7 +17,7 @@
 #import <objc/runtime.h>
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonDigest.h>
-#import <UIKit/UIKit.h>
+// #import <UIKit/UIKit.h>
 #import "AWSLogging.h"
 #import "AWSGZIP.h"
 #import "AWSMantle.h"
@@ -111,9 +111,9 @@ static NSTimeInterval _clockskew = 0.0;
 }
 
 - (NSDictionary *)aws_recursivelyRemoveNullEntries:(NSDictionary *)inputDictionary {
-    
+
     NSMutableDictionary *resultMutableDictionary = [NSMutableDictionary new];
-    
+
     for (NSString *key in inputDictionary) {
         id value = inputDictionary[key];
         if ([value isEqual:[NSNull null]]) {
@@ -234,18 +234,18 @@ static NSTimeInterval _clockskew = 0.0;
 @implementation NSString (AWS)
 
 + (NSString *)aws_base64md5FromData:(NSData *)data {
-    
+
     if([data length] > UINT32_MAX)
     {
         //The NSData size is too large. The maximum allowable size is UINT32_MAX.
         return nil;
     }
-    
+
     const void    *cStr = [data bytes];
     unsigned char result[CC_MD5_DIGEST_LENGTH];
-    
+
     CC_MD5(cStr, (uint32_t)[data length], result);
-    
+
     NSData *md5 = [[NSData alloc] initWithBytes:result length:CC_MD5_DIGEST_LENGTH];
     return [md5 base64EncodedStringWithOptions:kNilOptions];
 }
@@ -254,8 +254,8 @@ static NSTimeInterval _clockskew = 0.0;
     static NSString *_userAgent = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSString *systemName = [[[UIDevice currentDevice] systemName] stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-        NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
+        NSString *systemName = @"osx";//[[[UIDevice currentDevice] systemName] stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+        NSString *systemVersion = @"10.10";//[[UIDevice currentDevice] systemVersion];
         NSString *localeIdentifier = [[NSLocale currentLocale] localeIdentifier];
         _userAgent = [NSString stringWithFormat:@"aws-sdk-iOS/%@ %@/%@ %@", AWSiOSSDKVersion, systemName, systemVersion, localeIdentifier];
     });
@@ -374,20 +374,20 @@ static NSTimeInterval _clockskew = 0.0;
                               toURL:(NSURL *)destinationURL
                      backupItemName:(NSString *)backupItemName
                               error:(NSError **)outError {
-    
+
     NSURL *tempDir = [self URLForDirectory:NSItemReplacementDirectory
                                   inDomain:NSUserDomainMask
                          appropriateForURL:destinationURL
                                     create:YES
                                      error:outError];
-    
+
     if (!tempDir) return NO;
-    
+
     NSURL *tempURL = [tempDir URLByAppendingPathComponent:[destinationURL lastPathComponent]];
-    
+
     BOOL result = [self copyItemAtURL:sourceURL toURL:tempURL error:outError];
     if (result) {
-        
+
         result = [self replaceItemAtURL:destinationURL
                           withItemAtURL:tempURL
                          backupItemName:backupItemName
@@ -413,18 +413,18 @@ static NSTimeInterval _clockskew = 0.0;
                             AWSLogError(@"Failed to remove destinationURL(%@): %@",destinationURL,removeError);
                         }
                     }
-                    
+
                 }
             }
         }
     }
-    
+
     NSError *error;
     if (![self removeItemAtURL:tempDir error:&error])
     {
         AWSLogError(@"Failed to remove temp(%@) directory after atomic copy: %@",tempDir,error);
     }
-    
+
     return result;
 }
 

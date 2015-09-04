@@ -14,7 +14,7 @@
  */
 
 #import "AWSNetworking.h"
-#import <UIKit/UIKit.h>
+// #import <UIKit/UIKit.h>
 #import "AWSBolts.h"
 #import "AWSCategory.h"
 #import "AWSModel.h"
@@ -147,14 +147,14 @@ NSString *const AWSNetworkingErrorDomain = @"com.amazonaws.AWSNetworkingErrorDom
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    
+
     AWSNetworkingConfiguration *configuration = nil;
     if ([self isMemberOfClass:[AWSServiceConfiguration class]]) {
         configuration = [[AWSServiceConfiguration allocWithZone:zone] initWithRegion:AWSRegionUnknown credentialsProvider:nil];
     } else {
         configuration = [[[self class] allocWithZone:zone] init];
     }
-    
+
     configuration.baseURL = [self.baseURL copy];
     configuration.URLString = [self.URLString copy];
     configuration.HTTPMethod = self.HTTPMethod;
@@ -321,7 +321,7 @@ NSString *const AWSNetworkingErrorDomain = @"com.amazonaws.AWSNetworkingErrorDom
    forHTTPHeaderField:@"X-Amz-Date"];
 
     [request setValue:[NSString aws_baseUserAgent] forHTTPHeaderField:@"User-Agent"];
-    
+
     return [AWSTask taskWithResult:nil];
 }
 
