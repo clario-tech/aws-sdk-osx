@@ -13,7 +13,7 @@
  permissions and limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+// #import <UIKit/UIKit.h>
 #import <AWSCore/AWSCore.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -54,7 +54,7 @@ typedef void (^AWSS3TransferUtilityDownloadCompletionHandlerBlock) (AWSS3Transfe
  @param bytesSent                The number of bytes sent since the last time this block was called.
  @param totalBytesSent           The total number of bytes sent so far.
  @param totalBytesExpectedToSend The expected length of the body data.
- 
+
  @note Refer to `- URLSession:task:didSendBodyData:totalBytesSent:totalBytesExpectedToSend:` in `NSURLSessionTaskDelegate` for more details.
  */
 typedef void (^AWSS3TransferUtilityUploadProgressBlock) (AWSS3TransferUtilityUploadTask *task,
@@ -69,7 +69,7 @@ typedef void (^AWSS3TransferUtilityUploadProgressBlock) (AWSS3TransferUtilityUpl
  @param bytesWritten              The number of bytes transferred since the last time this delegate method was called.
  @param totalBytesWritten         The total number of bytes transferred so far.
  @param totalBytesExpectedToWrite The expected length of the file, as provided by the `Content-Length` header. If this header was not provided, the value is `NSURLSessionTransferSizeUnknown`.
- 
+
  @note Refer to `- URLSession:downloadTask:didWriteData:totalBytesWritten:totalBytesExpectedToWrite:` in `NSURLSessionDownloadDelegate` for more details.
  */
 typedef void (^AWSS3TransferUtilityDownloadProgressBlock) (AWSS3TransferUtilityDownloadTask *task,
@@ -211,9 +211,9 @@ typedef void (^AWSS3TransferUtilityDownloadProgressBlock) (AWSS3TransferUtilityD
  @param identifier        The identifier of the URL session requiring attention.
  @param completionHandler The completion handler to call when you finish processing the events.
  */
-+ (void)interceptApplication:(UIApplication *)application
-handleEventsForBackgroundURLSession:(NSString *)identifier
-           completionHandler:(void (^)())completionHandler;
+// + (void)interceptApplication:(UIApplication *)application
+// handleEventsForBackgroundURLSession:(NSString *)identifier
+//            completionHandler:(void (^)())completionHandler;
 
 /**
  Saves the `NSData` to a temporary directory and uploads it to the specified Amazon S3 bucket.
