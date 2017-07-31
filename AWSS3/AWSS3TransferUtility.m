@@ -172,7 +172,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
         }
 
         // Clean up the temporary directory
-        __weak AWSS3TransferUtility *weakSelf = self;
+        __block typeof(AWSS3TransferUtility) *weakSelf = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             [weakSelf cleanUpTemporaryDirectory];
         });
@@ -243,7 +243,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
 
     [expression assignRequestParameters:getPreSignedURLRequest];
 
-    __weak AWSS3TransferUtility *weakSelf = self;
+    __block typeof(AWSS3TransferUtility) *weakSelf = self;
     return [[self.preSignedURLBuilder getPreSignedURL:getPreSignedURLRequest] continueWithSuccessBlock:^id(AWSTask *task) {
         NSURL *presignedURL = task.result;
 
@@ -307,7 +307,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
 
     [expression assignRequestParameters:getPreSignedURLRequest];
 
-    __weak AWSS3TransferUtility *weakSelf = self;
+    __block typeof(AWSS3TransferUtility) *weakSelf = self;
     return [[self.preSignedURLBuilder getPreSignedURL:getPreSignedURLRequest] continueWithSuccessBlock:^id(AWSTask *task) {
         NSURL *presignedURL = task.result;
 
@@ -335,7 +335,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
                                 downloadTask:(void (^)(AWSS3TransferUtilityDownloadTask *downloadTask,
                                                        AWSS3TransferUtilityDownloadProgressBlock *downloadProgressBlockReference,
                                                        AWSS3TransferUtilityDownloadCompletionHandlerBlock *completionHandlerReference))downloadBlocksAssigner {
-    __weak AWSS3TransferUtility *weakSelf = self;
+    __block typeof(AWSS3TransferUtility) *weakSelf = self;
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         if ([dataTasks count] != 0) {
             AWSLogError(@"The underlying NSURLSession contains data tasks. This should not happen.");
@@ -388,7 +388,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     AWSTaskCompletionSource *completionSource = [AWSTaskCompletionSource new];
 
     NSMutableArray *allTasks = [NSMutableArray new];
-    __weak AWSS3TransferUtility *weakSelf = self;
+    __block typeof(AWSS3TransferUtility) *weakSelf = self;
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         if ([dataTasks count] != 0) {
             AWSLogError(@"The underlying NSURLSession contains data tasks. This should not happen.");
@@ -420,7 +420,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     AWSTaskCompletionSource *completionSource = [AWSTaskCompletionSource new];
 
     NSMutableArray *allUploadTasks = [NSMutableArray new];
-    __weak AWSS3TransferUtility *weakSelf = self;
+    __block typeof(AWSS3TransferUtility) *weakSelf = self;
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         if ([dataTasks count] != 0) {
             AWSLogError(@"The underlying NSURLSession contains data tasks. This should not happen.");
@@ -444,7 +444,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     AWSTaskCompletionSource *completionSource = [AWSTaskCompletionSource new];
 
     NSMutableArray *allDownloadTasks = [NSMutableArray new];
-    __weak AWSS3TransferUtility *weakSelf = self;
+    __block typeof(AWSS3TransferUtility) *weakSelf = self;
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         if ([dataTasks count] != 0) {
             AWSLogError(@"The underlying NSURLSession contains data tasks. This should not happen.");
@@ -473,7 +473,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     }
 
     // Goes through the temporary directory.
-    __weak AWSS3TransferUtility *weakSelf = self;
+    __block typeof(AWSS3TransferUtility) *weakSelf = self;
     [contentsOfDirectory enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *fileName = (NSString *)obj;
         NSString *filePath = [weakSelf.temporaryDirectoryPath stringByAppendingPathComponent:fileName];
