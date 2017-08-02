@@ -132,6 +132,7 @@ NSString *const AWSCognitoNotificationNewId = @"NEWID";
 @implementation AWSAbstractCognitoIdentityProvider
 
 @synthesize accountId = _accountId;
+@synthesize semaphore = _semaphore;
 
 - (instancetype)initWithRegionType:(AWSRegionType)regionType
                         identityId:(NSString *)identityId

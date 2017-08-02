@@ -24,6 +24,8 @@
 
 @implementation AWSSynchronizedMutableDictionary
 
+@synthesize dispatchQueue = _dispatchQueue;
+
 - (instancetype)init {
     if (self = [super init]) {
         _dictionary = [NSMutableDictionary new];

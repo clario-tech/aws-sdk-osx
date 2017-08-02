@@ -73,7 +73,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
         NSString *pathComponent = [[NSString alloc] initWithFormat:@"%@.%@", AWSTMDiskCachePrefix, _name];
         _cacheURL = [NSURL fileURLWithPathComponents:@[ rootPath, pathComponent ]];
 
-        __weak AWSTMDiskCache *weakSelf = self;
+        __block typeof(self) weakSelf = self;
 
         dispatch_async(_queue, ^{
             AWSTMDiskCache *strongSelf = weakSelf;
@@ -386,7 +386,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
     NSDate *date = [[NSDate alloc] initWithTimeIntervalSinceNow:-_ageLimit];
     [self trimDiskToDate:date];
     
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
     
     dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_ageLimit * NSEC_PER_SEC));
     dispatch_after(time, _queue, ^(void) {
@@ -404,7 +404,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
     if (!key || !block)
         return;
 
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -438,7 +438,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
     if (!key || !block)
         return;
 
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -466,7 +466,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
     TMCacheStartBackgroundTask();
 
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -524,7 +524,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
     TMCacheStartBackgroundTask();
 
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -552,7 +552,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
     TMCacheStartBackgroundTask();
     
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
     
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -582,7 +582,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
     
     TMCacheStartBackgroundTask();
 
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -609,7 +609,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
     TMCacheStartBackgroundTask();
 
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -631,7 +631,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 {
     TMCacheStartBackgroundTask();
     
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -669,7 +669,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
     TMCacheStartBackgroundTask();
 
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -877,7 +877,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
 - (void)setWillAddObjectBlock:(AWSTMDiskCacheObjectBlock)block
 {
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -901,7 +901,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
 - (void)setWillRemoveObjectBlock:(AWSTMDiskCacheObjectBlock)block
 {
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -925,7 +925,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
 - (void)setWillRemoveAllObjectsBlock:(AWSTMDiskCacheBlock)block
 {
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -949,7 +949,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
 - (void)setDidAddObjectBlock:(AWSTMDiskCacheObjectBlock)block
 {
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -973,7 +973,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
 - (void)setDidRemoveObjectBlock:(AWSTMDiskCacheObjectBlock)block
 {
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -997,7 +997,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
 - (void)setDidRemoveAllObjectsBlock:(AWSTMDiskCacheBlock)block
 {
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
 
     dispatch_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -1021,7 +1021,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
 - (void)setByteLimit:(NSUInteger)byteLimit
 {
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
     
     dispatch_barrier_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;
@@ -1048,7 +1048,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
 - (void)setAgeLimit:(NSTimeInterval)ageLimit
 {
-    __weak AWSTMDiskCache *weakSelf = self;
+    __block typeof(self) weakSelf = self;
     
     dispatch_barrier_async(_queue, ^{
         AWSTMDiskCache *strongSelf = weakSelf;

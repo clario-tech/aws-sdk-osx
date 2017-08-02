@@ -86,6 +86,8 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 @implementation AWSReachability
 
+@synthesize reachabilitySerialQueue = _reachabilitySerialQueue;
+
 #pragma mark - Class Constructor Methods
 
 +(AWSReachability*)reachabilityWithHostName:(NSString*)hostname

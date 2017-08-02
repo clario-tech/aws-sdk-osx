@@ -257,6 +257,7 @@ NSString *const AWSCredentialsProviderKeychainIdentityId = @"identityId";
 @synthesize secretKey=_secretKey;
 @synthesize sessionKey=_sessionKey;
 @synthesize expiration=_expiration;
+@synthesize semaphore=_semaphore;
 
 - (instancetype)initWithRegionType:(AWSRegionType)regionType
                     identityPoolId:(NSString *)identityPoolId {
