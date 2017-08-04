@@ -18,7 +18,11 @@
 @interface AWSSynchronizedMutableDictionary()
 
 @property (nonatomic, strong) NSMutableDictionary *dictionary;
+#if OS_OBJECT_USE_OBJC
 @property (nonatomic, strong) dispatch_queue_t dispatchQueue;
+#else
+@property (nonatomic, assign) dispatch_queue_t dispatchQueue;
+#endif
 
 @end
 
@@ -33,6 +37,16 @@
     }
 
     return self;
+}
+
+- (void)dealloc
+{
+#if !OS_OBJECT_USE_OBJC
+	if (_dispatchQueue)
+	{
+		dispatch_release(_dispatchQueue);
+	}
+#endif
 }
 
 - (id)objectForKey:(id)aKey {
