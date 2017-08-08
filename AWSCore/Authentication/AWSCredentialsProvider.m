@@ -52,8 +52,8 @@ NSString *const AWSCredentialsProviderKeychainIdentityId = @"identityId";
 - (instancetype)initWithCredentialsFilename:(NSString *)credentialsFilename {
     if (self = [super init]) {
         NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:credentialsFilename ofType:@"json"];
-        NSDictionary *credentialsJson = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
-                                                                        options:NSJSONReadingMutableContainers
+        NSDictionary *credentialsJson = [AWSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
+                                                                        options:0
                                                                           error:nil];
         _accessKey = credentialsJson[@"accessKey"];
         _secretKey = credentialsJson[@"secretKey"];

@@ -1294,7 +1294,7 @@ NSString *const AWSJSONParserErrorDomain = @"com.amazonaws.AWSJSONParserErrorDom
         }
 
     } else {
-        NSData *bodyData = [NSJSONSerialization dataWithJSONObject:serializedJsonObject
+        NSData *bodyData = [AWSJSONSerialization dataWithJSONObject:serializedJsonObject
                                                            options:0
                                                              error:error];
         return bodyData;
