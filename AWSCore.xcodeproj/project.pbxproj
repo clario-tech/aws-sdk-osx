@@ -224,6 +224,14 @@
 		CEDE75F11ACA1E70002A0D94 /* AWSClientContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = CED822011AC486E40017E687 /* AWSClientContext.h */; };
 		CEE7DE611AC1DFB10095C4B7 /* AWSSTSService.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE7DE601AC1DFB10095C4B7 /* AWSSTSService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CEE7DE631AC1DFEE0095C4B7 /* AWSCognitoIdentityService.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE7DE621AC1DFEE0095C4B7 /* AWSCognitoIdentityService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D82EE8331F39B0E700BC3431 /* AWSURLSessionConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = D84E88621F38C95C00ECD077 /* AWSURLSessionConfiguration.m */; };
+		D82EE8341F39B0EA00BC3431 /* AWSURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D84E88601F38C95C00ECD077 /* AWSURLSession.m */; };
+		D84E88631F38C95C00ECD077 /* AWSURLSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D84E885F1F38C95C00ECD077 /* AWSURLSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D84E88641F38C95C00ECD077 /* AWSURLSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D84E885F1F38C95C00ECD077 /* AWSURLSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D84E88651F38C95C00ECD077 /* AWSURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D84E88601F38C95C00ECD077 /* AWSURLSession.m */; };
+		D84E88671F38C95C00ECD077 /* AWSURLSessionConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = D84E88611F38C95C00ECD077 /* AWSURLSessionConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D84E88681F38C95C00ECD077 /* AWSURLSessionConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = D84E88611F38C95C00ECD077 /* AWSURLSessionConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D84E88691F38C95C00ECD077 /* AWSURLSessionConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = D84E88621F38C95C00ECD077 /* AWSURLSessionConfiguration.m */; };
 		D8D1A4C41F30CE98008740CA /* AWSTMMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = CE08A07D1B02B4C40000ED1F /* AWSTMMemoryCache.m */; };
 		D8D1A4C51F30CE98008740CA /* AWSExecutor.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA0CA3F1B0187640061508B /* AWSExecutor.m */; };
 		D8D1A4C61F30CE98008740CA /* AWSModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF558311AB371AB0067F4F1 /* AWSModel.m */; };
@@ -671,6 +679,10 @@
 		CEE7DE601AC1DFB10095C4B7 /* AWSSTSService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSSTSService.h; sourceTree = "<group>"; };
 		CEE7DE621AC1DFEE0095C4B7 /* AWSCognitoIdentityService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSCognitoIdentityService.h; sourceTree = "<group>"; };
 		CEFBD4EA1ADEF199004358F3 /* AWSUtilityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSUtilityTests.m; sourceTree = "<group>"; };
+		D84E885F1F38C95C00ECD077 /* AWSURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSURLSession.h; sourceTree = "<group>"; };
+		D84E88601F38C95C00ECD077 /* AWSURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSURLSession.m; sourceTree = "<group>"; };
+		D84E88611F38C95C00ECD077 /* AWSURLSessionConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSURLSessionConfiguration.h; sourceTree = "<group>"; };
+		D84E88621F38C95C00ECD077 /* AWSURLSessionConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSURLSessionConfiguration.m; sourceTree = "<group>"; };
 		D8D1A5691F30CE98008740CA /* libAWSCoreForMac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAWSCoreForMac.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -864,6 +876,10 @@
 		BDF5580F1AB371AB0067F4F1 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				D84E885F1F38C95C00ECD077 /* AWSURLSession.h */,
+				D84E88601F38C95C00ECD077 /* AWSURLSession.m */,
+				D84E88611F38C95C00ECD077 /* AWSURLSessionConfiguration.h */,
+				D84E88621F38C95C00ECD077 /* AWSURLSessionConfiguration.m */,
 				BDF558101AB371AB0067F4F1 /* AWSNetworking.h */,
 				BDF558111AB371AB0067F4F1 /* AWSNetworking.m */,
 				BDF558121AB371AB0067F4F1 /* AWSURLSessionManager.h */,
@@ -1101,6 +1117,7 @@
 				CE08A0B41B02B5B10000ED1F /* AWSMTLModel+NSCoding.h in Headers */,
 				CE08A0B21B02B5B10000ED1F /* AWSMTLManagedObjectAdapter.h in Headers */,
 				CE08A0C61B02B5B10000ED1F /* NSValueTransformer+AWSMTLPredefinedTransformerAdditions.h in Headers */,
+				D84E88631F38C95C00ECD077 /* AWSURLSession.h in Headers */,
 				CE08A0BA1B02B5B10000ED1F /* AWSMTLValueTransformer.h in Headers */,
 				CE08A0C21B02B5B10000ED1F /* NSObject+AWSMTLComparisonAdditions.h in Headers */,
 				CEA0CA4D1B0187640061508B /* AWSBolts.h in Headers */,
@@ -1133,6 +1150,7 @@
 				CEE7DE631AC1DFEE0095C4B7 /* AWSCognitoIdentityService.h in Headers */,
 				BDB73D5F1B1D3E0B00717559 /* AWSSTSResources.h in Headers */,
 				BDF558E71AB371AE0067F4F1 /* AWSLogging.h in Headers */,
+				D84E88671F38C95C00ECD077 /* AWSURLSessionConfiguration.h in Headers */,
 				CE08A0811B02B4C40000ED1F /* AWSTMDiskCache.h in Headers */,
 				CEA0CA5E1B01899B0061508B /* AWSFMDatabase.h in Headers */,
 				BDF558D11AB371AD0067F4F1 /* AWSURLSessionManager.h in Headers */,
@@ -1169,6 +1187,7 @@
 				D8D1A5301F30CE98008740CA /* AWSMTLModel+NSCoding.h in Headers */,
 				D8D1A5311F30CE98008740CA /* AWSMTLManagedObjectAdapter.h in Headers */,
 				D8D1A5321F30CE98008740CA /* NSValueTransformer+AWSMTLPredefinedTransformerAdditions.h in Headers */,
+				D84E88641F38C95C00ECD077 /* AWSURLSession.h in Headers */,
 				D8D1A5331F30CE98008740CA /* AWSMTLValueTransformer.h in Headers */,
 				D8D1A5341F30CE98008740CA /* NSObject+AWSMTLComparisonAdditions.h in Headers */,
 				D8D1A5351F30CE98008740CA /* AWSBolts.h in Headers */,
@@ -1201,6 +1220,7 @@
 				D8D1A5501F30CE98008740CA /* AWSCognitoIdentityService.h in Headers */,
 				D8D1A5511F30CE98008740CA /* AWSSTSResources.h in Headers */,
 				D8D1A5521F30CE98008740CA /* AWSLogging.h in Headers */,
+				D84E88681F38C95C00ECD077 /* AWSURLSessionConfiguration.h in Headers */,
 				D8D1A5531F30CE98008740CA /* AWSTMDiskCache.h in Headers */,
 				D8D1A5541F30CE98008740CA /* AWSFMDatabase.h in Headers */,
 				D8D1A5551F30CE98008740CA /* AWSURLSessionManager.h in Headers */,
@@ -1472,11 +1492,13 @@
 				BDF558DC1AB371AD0067F4F1 /* AWSValidation.m in Sources */,
 				BDB73D601B1D3E0B00717559 /* AWSSTSResources.m in Sources */,
 				CEA0CA4C1B0187640061508B /* AWSTaskCompletionSource.m in Sources */,
+				D84E88691F38C95C00ECD077 /* AWSURLSessionConfiguration.m in Sources */,
 				CE08A0B91B02B5B10000ED1F /* AWSMTLReflection.m in Sources */,
 				CE08A0C11B02B5B10000ED1F /* NSError+AWSMTLModelException.m in Sources */,
 				CEA589791B02B30D009901A6 /* AWSReachability.m in Sources */,
 				CE08A0BB1B02B5B10000ED1F /* AWSMTLValueTransformer.m in Sources */,
 				BDF558DA1AB371AD0067F4F1 /* AWSURLResponseSerialization.m in Sources */,
+				D84E88651F38C95C00ECD077 /* AWSURLSession.m in Sources */,
 				BDF558E61AB371AD0067F4F1 /* AWSCategory.m in Sources */,
 				BDF558D01AB371AD0067F4F1 /* AWSNetworking.m in Sources */,
 				CE08A0BF1B02B5B10000ED1F /* NSDictionary+AWSMTLManipulationAdditions.m in Sources */,
@@ -1528,6 +1550,7 @@
 				D8D1A4CF1F30CE98008740CA /* AWSSynchronizedMutableDictionary.m in Sources */,
 				D8D1A4D01F30CE98008740CA /* AWSURLRequestRetryHandler.m in Sources */,
 				D8D1A4D11F30CE98008740CA /* AWSSTSModel.m in Sources */,
+				D82EE8341F39B0EA00BC3431 /* AWSURLSession.m in Sources */,
 				D8D1A4D21F30CE98008740CA /* AWSFMResultSet.m in Sources */,
 				D8D1A4D31F30CE98008740CA /* NSObject+AWSMTLComparisonAdditions.m in Sources */,
 				D8D1A4D41F30CE98008740CA /* NSArray+AWSMTLManipulationAdditions.m in Sources */,
@@ -1535,6 +1558,7 @@
 				D8D1A4D61F30CE98008740CA /* NSValueTransformer+AWSMTLInversionAdditions.m in Sources */,
 				D8D1A4D71F30CE98008740CA /* AWSService.m in Sources */,
 				D8D1A4D81F30CE98008740CA /* AWSTMDiskCache.m in Sources */,
+				D82EE8331F39B0E700BC3431 /* AWSURLSessionConfiguration.m in Sources */,
 				D8D1A4D91F30CE98008740CA /* AWSEXTScope.m in Sources */,
 				D8D1A4DA1F30CE98008740CA /* AWSTask.m in Sources */,
 				D8D1A4DB1F30CE98008740CA /* AWSCognitoIdentityResources.m in Sources */,

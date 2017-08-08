@@ -16,16 +16,18 @@
 #import "AWSS3TransferUtility.h"
 #import "AWSS3PreSignedURL.h"
 #import "AWSSynchronizedMutableDictionary.h"
+#import <AWSCore/AWSURLSession.h>
+#import "AWSURLSessionConfiguration.h"
 
 NSString *const AWSS3TransferUtilityIdentifier = @"com.amazonaws.AWSS3TransferUtility.Identifier";
 NSTimeInterval const AWSS3TransferUtilityTimeoutIntervalForResource = 50 * 60; // 50 minutes
 
 #pragma mark - Private classes
 
-@interface AWSS3TransferUtility() <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
+@interface AWSS3TransferUtility() <AWSURLSessionDelegate, AWSURLSessionTaskDelegate, AWSURLSessionDataDelegate>
 
 @property (strong, nonatomic) AWSS3PreSignedURLBuilder *preSignedURLBuilder;
-@property (strong, nonatomic) NSURLSession *session;
+@property (strong, nonatomic) AWSURLSession *session;
 @property (strong, nonatomic) NSString *sessionIdentifier;
 @property (strong, nonatomic) NSString *temporaryDirectoryPath;
 @property (strong, nonatomic) AWSSynchronizedMutableDictionary *taskDictionary;
@@ -35,7 +37,7 @@ NSTimeInterval const AWSS3TransferUtilityTimeoutIntervalForResource = 50 * 60; /
 
 @interface AWSS3TransferUtilityTask()
 
-@property (strong, nonatomic) NSURLSessionTask *sessionTask;
+@property (strong, nonatomic) AWSURLSessionTask *sessionTask;
 
 @property (strong, nonatomic) NSString *bucket;
 @property (strong, nonatomic) NSString *key;
@@ -145,15 +147,12 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
             _sessionIdentifier = AWSS3TransferUtilityIdentifier;
         }
 
-        NSURLSessionConfiguration *configuration =  nil;
-        if ([NSURLSessionConfiguration respondsToSelector:@selector(backgroundSessionConfigurationWithIdentifier:)]) {
-            configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:_sessionIdentifier];
-        } else {
-            configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:_sessionIdentifier];
-        }
-
+        AWSURLSessionConfiguration *configuration =  nil;
+		
+		configuration = [AWSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:_sessionIdentifier];
+		
         configuration.timeoutIntervalForResource = AWSS3TransferUtilityTimeoutIntervalForResource;
-        _session = [NSURLSession sessionWithConfiguration:configuration
+        _session = [AWSURLSession sessionWithConfiguration:configuration
                                                  delegate:self
                                             delegateQueue:nil];
 
@@ -163,7 +162,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
         _temporaryDirectoryPath = [NSTemporaryDirectory() stringByAppendingPathComponent:[_sessionIdentifier aws_md5String]];
         NSURL *directoryURL = [NSURL fileURLWithPath:_temporaryDirectoryPath];
         NSError *error = nil;
-        BOOL result = [[NSFileManager defaultManager] createDirectoryAtURL:directoryURL
+        BOOL result = [[NSFileManager defaultManager] createDirectoryAtPath:directoryURL.path
                                                withIntermediateDirectories:YES
                                                                 attributes:nil
                                                                      error:&error];
@@ -258,7 +257,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
             [request setValue:getPreSignedURLRequest.contentMD5 forHTTPHeaderField:@"Content-MD5"];
         }
 
-        NSURLSessionUploadTask *uploadTask = [weakSelf.session uploadTaskWithRequest:request
+        AWSURLSessionUploadTask *uploadTask = [weakSelf.session uploadTaskWithRequest:request
                                                                             fromFile:fileURL];
         [uploadTask resume];
 
@@ -317,7 +316,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
 
         [request setValue:[NSString aws_baseUserAgent] forHTTPHeaderField:@"User-Agent"];
 
-        NSURLSessionDownloadTask *downloadTask = [weakSelf.session downloadTaskWithRequest:request];
+        AWSURLSessionDownloadTask *downloadTask = [weakSelf.session downloadTaskWithRequest:request];
         [downloadTask resume];
 
         transferUtilityTask.sessionTask = downloadTask;
@@ -338,11 +337,11 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     __block typeof(AWSS3TransferUtility) *weakSelf = self;
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         if ([dataTasks count] != 0) {
-            AWSLogError(@"The underlying NSURLSession contains data tasks. This should not happen.");
+            AWSLogError(@"The underlying AWSURLSession contains data tasks. This should not happen.");
         }
 
         [uploadTasks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSURLSessionUploadTask *uploadTask = obj;
+            AWSURLSessionUploadTask *uploadTask = obj;
             AWSS3TransferUtilityUploadTask *transferUtilityUploadTask = [weakSelf getUploadTask:uploadTask];
             if (transferUtilityUploadTask) {
                 if (uploadBlocksAssigner) {
@@ -362,7 +361,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
         }];
 
         [downloadTasks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSURLSessionDownloadTask *downloadTask = obj;
+            AWSURLSessionDownloadTask *downloadTask = obj;
             AWSS3TransferUtilityDownloadTask *transferUtilityDownloadTask = [weakSelf getDownloadTask:downloadTask];
             if (transferUtilityDownloadTask) {
                 if (downloadBlocksAssigner) {
@@ -391,11 +390,11 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     __block typeof(AWSS3TransferUtility) *weakSelf = self;
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         if ([dataTasks count] != 0) {
-            AWSLogError(@"The underlying NSURLSession contains data tasks. This should not happen.");
+            AWSLogError(@"The underlying AWSURLSession contains data tasks. This should not happen.");
         }
 
         [uploadTasks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSURLSessionUploadTask *uploadTask = obj;
+            AWSURLSessionUploadTask *uploadTask = obj;
             AWSS3TransferUtilityUploadTask *transferUtilityUploadTask = [weakSelf getUploadTask:uploadTask];
             if (transferUtilityUploadTask) {
                 [allTasks addObject:transferUtilityUploadTask];
@@ -403,7 +402,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
         }];
 
         [downloadTasks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSURLSessionDownloadTask *downloadTask = obj;
+            AWSURLSessionDownloadTask *downloadTask = obj;
             AWSS3TransferUtilityDownloadTask *transferUtilityDownloadTask = [weakSelf getDownloadTask:downloadTask];
             if (transferUtilityDownloadTask) {
                 [allTasks addObject:transferUtilityDownloadTask];
@@ -423,11 +422,11 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     __block typeof(AWSS3TransferUtility) *weakSelf = self;
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         if ([dataTasks count] != 0) {
-            AWSLogError(@"The underlying NSURLSession contains data tasks. This should not happen.");
+            AWSLogError(@"The underlying AWSURLSession contains data tasks. This should not happen.");
         }
 
         [uploadTasks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSURLSessionUploadTask *uploadTask = obj;
+            AWSURLSessionUploadTask *uploadTask = obj;
             AWSS3TransferUtilityUploadTask *transferUtilityUploadTask = [weakSelf getUploadTask:uploadTask];
             if (transferUtilityUploadTask) {
                 [allUploadTasks addObject:transferUtilityUploadTask];
@@ -447,11 +446,11 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     __block typeof(AWSS3TransferUtility) *weakSelf = self;
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         if ([dataTasks count] != 0) {
-            AWSLogError(@"The underlying NSURLSession contains data tasks. This should not happen.");
+            AWSLogError(@"The underlying AWSURLSession contains data tasks. This should not happen.");
         }
 
         [downloadTasks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSURLSessionDownloadTask *downloadTask = obj;
+            AWSURLSessionDownloadTask *downloadTask = obj;
             AWSS3TransferUtilityDownloadTask *transferUtilityDownloadTask = [weakSelf getDownloadTask:downloadTask];
             if (transferUtilityDownloadTask) {
                 [allDownloadTasks addObject:transferUtilityDownloadTask];
@@ -498,9 +497,9 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
 
 #pragma mark - Internal helper methods
 
-- (AWSS3TransferUtilityUploadTask *)getUploadTask:(NSURLSessionUploadTask *)uploadTask {
-    if (![uploadTask isKindOfClass:[NSURLSessionUploadTask class]]) {
-        AWSLogError(@"uploadTask is not an instance of NSURLSessionUploadTask.");
+- (AWSS3TransferUtilityUploadTask *)getUploadTask:(AWSURLSessionUploadTask *)uploadTask {
+    if (![uploadTask isKindOfClass:[AWSURLSessionUploadTask class]]) {
+        AWSLogError(@"uploadTask is not an instance of AWSURLSessionUploadTask.");
         return nil;
     }
 
@@ -516,9 +515,9 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     return transferUtilityUploadTask;
 }
 
-- (AWSS3TransferUtilityDownloadTask *)getDownloadTask:(NSURLSessionDownloadTask *)downloadTask {
-    if (![downloadTask isKindOfClass:[NSURLSessionDownloadTask class]]) {
-        AWSLogError(@"downloadTask is not an instance of NSURLSessionDownloadTask.");
+- (AWSS3TransferUtilityDownloadTask *)getDownloadTask:(AWSURLSessionDownloadTask *)downloadTask {
+    if (![downloadTask isKindOfClass:[AWSURLSessionDownloadTask class]]) {
+        AWSLogError(@"downloadTask is not an instance of AWSURLSessionDownloadTask.");
         return nil;
     }
 
@@ -553,21 +552,21 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
 //     }
 // }
 
-#pragma mark - NSURLSessionDelegate
+#pragma mark - AWSURLSessionDelegate
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session {
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(AWSURLSession *)session {
     if (self.backgroundURLSessionCompletionHandler) {
         self.backgroundURLSessionCompletionHandler();
     }
 }
 
-#pragma mark - NSURLSessionTaskDelegate
+#pragma mark - AWSURLSessionTaskDelegate
 
-- (void)URLSession:(NSURLSession *)session
-              task:(NSURLSessionTask *)task
+- (void)URLSession:(AWSURLSession *)session
+              task:(AWSURLSessionTask *)task
 didCompleteWithError:(NSError *)error {
-    if ([task isKindOfClass:[NSURLSessionUploadTask class]]) {
-        AWSS3TransferUtilityUploadTask *uploadTask = [self getUploadTask:(NSURLSessionUploadTask *)task];
+    if ([task isKindOfClass:[AWSURLSessionUploadTask class]]) {
+        AWSS3TransferUtilityUploadTask *uploadTask = [self getUploadTask:(AWSURLSessionUploadTask *)task];
         if (uploadTask.expression.completionHandler) {
             uploadTask.expression.completionHandler(uploadTask,
                                                     error);
@@ -575,8 +574,8 @@ didCompleteWithError:(NSError *)error {
 
         [self cleanUpTask:uploadTask];
     }
-    if ([task isKindOfClass:[NSURLSessionDownloadTask class]]) {
-        AWSS3TransferUtilityDownloadTask *downloadTask = [self getDownloadTask:(NSURLSessionDownloadTask *)task];
+    if ([task isKindOfClass:[AWSURLSessionDownloadTask class]]) {
+        AWSS3TransferUtilityDownloadTask *downloadTask = [self getDownloadTask:(AWSURLSessionDownloadTask *)task];
         if (error) {
             downloadTask.error = error;
         }
@@ -601,13 +600,13 @@ didCompleteWithError:(NSError *)error {
     task.sessionTask = nil;
 }
 
-- (void)URLSession:(NSURLSession *)session
-              task:(NSURLSessionTask *)task
+- (void)URLSession:(AWSURLSession *)session
+              task:(AWSURLSessionTask *)task
    didSendBodyData:(int64_t)bytesSent
     totalBytesSent:(int64_t)totalBytesSent
 totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
-    if ([task isKindOfClass:[NSURLSessionUploadTask class]]) {
-        AWSS3TransferUtilityUploadTask *transferUtilityUploadTask = [self getUploadTask:(NSURLSessionUploadTask *)task];
+    if ([task isKindOfClass:[AWSURLSessionUploadTask class]]) {
+        AWSS3TransferUtilityUploadTask *transferUtilityUploadTask = [self getUploadTask:(AWSURLSessionUploadTask *)task];
         if (transferUtilityUploadTask.expression.uploadProgress) {
             transferUtilityUploadTask.expression.uploadProgress(transferUtilityUploadTask,
                                                                 bytesSent,
@@ -617,10 +616,10 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
     }
 }
 
-#pragma mark - NSURLSessionDownloadDelegate
+#pragma mark - AWSURLSessionDownloadDelegate
 
-- (void)URLSession:(NSURLSession *)session
-      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+- (void)URLSession:(AWSURLSession *)session
+      downloadTask:(AWSURLSessionDownloadTask *)downloadTask
 didFinishDownloadingToURL:(NSURL *)location {
     AWSS3TransferUtilityTask *transferUtilityTask = [self getDownloadTask:downloadTask];
     if (transferUtilityTask.location) {
@@ -638,8 +637,8 @@ didFinishDownloadingToURL:(NSURL *)location {
     }
 }
 
-- (void)URLSession:(NSURLSession *)session
-      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+- (void)URLSession:(AWSURLSession *)session
+      downloadTask:(AWSURLSessionDownloadTask *)downloadTask
       didWriteData:(int64_t)bytesWritten
  totalBytesWritten:(int64_t)totalBytesWritten
 totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {

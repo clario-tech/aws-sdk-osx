@@ -184,7 +184,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
         
         if (![[NSFileManager defaultManager] fileExistsAtPath:[sharedTrashURL path]]) {
             NSError *error = nil;
-            [[NSFileManager defaultManager] createDirectoryAtURL:sharedTrashURL
+            [[NSFileManager defaultManager] createDirectoryAtPath:sharedTrashURL.path
                                      withIntermediateDirectories:YES
                                                       attributes:nil
                                                            error:&error];
@@ -238,7 +238,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
         return NO;
 
     NSError *error = nil;
-    BOOL success = [[NSFileManager defaultManager] createDirectoryAtURL:_cacheURL
+    BOOL success = [[NSFileManager defaultManager] createDirectoryAtPath:_cacheURL.path
                                             withIntermediateDirectories:YES
                                                              attributes:nil
                                                                   error:&error];
