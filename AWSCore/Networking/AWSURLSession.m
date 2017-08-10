@@ -7,6 +7,7 @@
 //
 
 #import "AWSURLSession.h"
+#import <stdlib.h>
 
 const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 
@@ -35,21 +36,23 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 
 @interface AWSURLSession ()<AWSURLSessionTaskInternalDelegate, AWSURLSessionDataTaskInternalDelegate, AWSURLSessionDownloadTaskInternalDelegate>
 
+@property (readonly, retain) NSMutableDictionary<NSNumber *, AWSURLSessionTask *> *sessionTasksByIdentifier;
+@property (readonly, retain) NSLock *modifyingTasksLock;
 @property (assign) BOOL finishingTasksRequested;
 @property (retain) NSOperationQueue *delegateQueue;
 @property (nullable, retain) id <AWSURLSessionDelegate> delegate;
 @property (copy) AWSURLSessionConfiguration *configuration;
-@property (retain, readonly) NSMutableArray<AWSURLSessionDataTask *> *dataTasks;
-@property (retain, readonly) NSMutableArray<AWSURLSessionUploadTask *> *uploadTasks;
-@property (retain, readonly) NSMutableArray<AWSURLSessionDownloadTask *> *downloadTasks;
 
 @end
 
 @interface AWSURLSessionTask ()<NSURLConnectionDelegate>
 
+@property (assign) NSUInteger taskIdentifier;    /* an identifier for this task, assigned by and unique to the owning session */
+
 @property (assign) id<AWSURLSessionTaskInternalDelegate> delegate;
 @property (readonly, retain) NSURLConnection *connection;
 @property (copy) NSURLResponse *response;
+@property (assign) AWSURLSessionTaskState state;
 
 - (instancetype)initWithRequest:(NSURLRequest *)request;
 
@@ -69,10 +72,9 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 
 @implementation AWSURLSession
 
+@synthesize sessionTasksByIdentifier = _sessionTasksByIdentifier;
 @synthesize delegateQueue = _delegateQueue;
-@synthesize downloadTasks = _downloadTasks;
-@synthesize uploadTasks = _uploadTasks;
-@synthesize dataTasks = _dataTasks;
+@synthesize modifyingTasksLock = _modifyingTasksLock;
 
 + (instancetype)sessionWithConfiguration:(AWSURLSessionConfiguration *)configuration delegate:(nullable id <AWSURLSessionDelegate>)delegate delegateQueue:(nullable NSOperationQueue *)queue
 {
@@ -98,49 +100,6 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 	return _delegateQueue;
 }
 
-- (NSMutableArray<AWSURLSessionDataTask *> *)dataTasks
-{
-	NSMutableArray<AWSURLSessionDataTask *> *result = nil;
-	@synchronized (self)
-	{
-		if (_dataTasks == nil)
-		{
-			_dataTasks = [NSMutableArray new];
-		}
-		result = [_dataTasks mutableCopy];
-	}
-	return result;
-}
-
-- (NSMutableArray<AWSURLSessionUploadTask *> *)uploadTasks
-{
-	NSMutableArray<AWSURLSessionUploadTask *> *result = nil;
-	@synchronized (self)
-	{
-		if (_uploadTasks == nil)
-		{
-			_uploadTasks = [NSMutableArray new];
-		}
-		result = [_uploadTasks mutableCopy];
-	}
-	return result;
-}
-
-- (NSMutableArray<AWSURLSessionDownloadTask *> *)downloadTasks
-{
-	NSMutableArray<AWSURLSessionDownloadTask *> *result = nil;
-	@synchronized (self)
-	{
-		if (_downloadTasks == nil)
-		{
-			_downloadTasks = [NSMutableArray new];
-		}
-		result = [_downloadTasks mutableCopy];
-	}
-	return result;
-}
-
-
 - (void)setDelegateQueue:(NSOperationQueue *)delegateQueue
 {
 	@synchronized (self)
@@ -152,9 +111,59 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 	}
 }
 
+- (NSMutableDictionary<NSNumber *, AWSURLSessionTask *> *)sessionTasksByIdentifier
+{
+	@synchronized (self)
+	{
+		if (_sessionTasksByIdentifier == nil)
+		{
+			_sessionTasksByIdentifier = [NSMutableDictionary new];
+		}
+	}
+	return _sessionTasksByIdentifier;
+}
+
+- (NSLock *)modifyingTasksLock
+{
+	@synchronized (self)
+	{
+		if (_modifyingTasksLock == nil)
+		{
+			_modifyingTasksLock = [NSLock new];
+		}
+	}
+	return _modifyingTasksLock;
+}
+
+
 - (void)getTasksWithCompletionHandler:(void (^)(NSArray<AWSURLSessionDataTask *> *dataTasks, NSArray<AWSURLSessionUploadTask *> *uploadTasks, NSArray<AWSURLSessionDownloadTask *> *downloadTasks))completionHandler
 {
-	completionHandler([self.dataTasks copy], [self.uploadTasks copy], [self.downloadTasks copy]);
+	
+	NSMutableArray<AWSURLSessionDataTask *> *dataTasks = [NSMutableArray array];
+	NSMutableArray<AWSURLSessionUploadTask *> *uploadTasks = [NSMutableArray array];
+	NSMutableArray<AWSURLSessionDownloadTask *> *downloadTasks = [NSMutableArray array];
+	
+	[self.modifyingTasksLock lock];
+	
+	[self.sessionTasksByIdentifier enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, AWSURLSessionTask * _Nonnull task, BOOL * _Nonnull stop)
+	{
+		if ([task isKindOfClass:[AWSURLSessionDataTask class]])
+		{
+			[dataTasks addObject:(AWSURLSessionDataTask *)task];
+		}
+		else if ([task isKindOfClass:[AWSURLSessionDownloadTask class]])
+		{
+			[downloadTasks addObject:(AWSURLSessionDownloadTask *)task];
+		}
+		else if ([task isKindOfClass:[AWSURLSessionUploadTask class]])
+		{
+			[uploadTasks addObject:(AWSURLSessionUploadTask *)task];
+		}
+	}];
+	
+	[self.modifyingTasksLock unlock];
+	
+	completionHandler([dataTasks copy], [uploadTasks copy], [downloadTasks copy]);
 }
 
 - (void)finishTasksAndInvalidate
@@ -171,10 +180,7 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 	
 	if (result != nil)
 	{
-		@synchronized (self)
-		{
-			[self.uploadTasks addObject:result];
-		}
+		[self registerTask:result];
 	}
 	
 	return result;
@@ -187,10 +193,7 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 	
 	if (result != nil)
 	{
-		@synchronized (self)
-		{
-			[self.downloadTasks addObject:result];
-		}
+		[self registerTask:result];
 	}
 	
 	return result;
@@ -203,13 +206,38 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 	
 	if (result != nil)
 	{
-		@synchronized (self)
-		{
-			[self.dataTasks addObject:result];
-		}
+		[self registerTask:result];
 	}
 	
 	return result;
+}
+
+- (void)registerTask:(AWSURLSessionTask *)task
+{
+	[self.modifyingTasksLock lock];
+	NSMutableDictionary *sessionTasksByIdentifier = self.sessionTasksByIdentifier;
+	NSUInteger identifier = 0;
+	
+	do
+    {
+		identifier = arc4random();
+	}
+	while (sessionTasksByIdentifier[@(identifier)] != nil);
+	
+	task.taskIdentifier = identifier;
+	
+	self.sessionTasksByIdentifier[@(identifier)] = task;
+	
+	[self.modifyingTasksLock unlock];
+}
+
+- (void)unregisterTask:(AWSURLSessionTask *)task
+{
+	[self.modifyingTasksLock lock];
+	
+	[self.sessionTasksByIdentifier removeObjectForKey:@(task.taskIdentifier)];
+	
+	[self.modifyingTasksLock unlock];
 }
 
 #pragma mark - AWSURLSessionTaskInternalDelegate
@@ -223,6 +251,8 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 			[(id<AWSURLSessionTaskDelegate>)self.delegate URLSession:self task:sessionTask didCompleteWithError:error];
 		}
 	}];
+	
+	[self unregisterTask:sessionTask];
 }
 
 - (void)task:(AWSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent
@@ -288,6 +318,7 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 	
 	if (self != nil)
 	{
+		_state = AWSURLSessionTaskStateSuspended;
 		_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
 	}
 	
@@ -307,11 +338,23 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 - (void)cancel
 {
 	[self.connection cancel];
+	self.state = AWSURLSessionResponseCancel;
 }
 
 - (void)resume
 {
-	[self.connection start];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+	{
+		[self.connection start];
+		self.state = AWSURLSessionTaskStateRunning;
+		NSRunLoop *runLoop = NSRunLoop.currentRunLoop;
+		[self.connection scheduleInRunLoop:runLoop forMode:NSDefaultRunLoopMode];
+		
+		while (self.state == AWSURLSessionTaskStateRunning)
+		{
+			[runLoop runMode:NSDefaultRunLoopMode beforeDate:NSDate.distantFuture];
+		}
+	});
 }
 
 - (void)suspend
@@ -321,6 +364,27 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 
 #pragma mark - NSURLConnectionDelegate
 
+- (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection
+{
+	return NO;
+}
+
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
+{
+	return YES;
+}
+
+- (nullable NSInputStream *)connection:(NSURLConnection *)connection needNewBodyStream:(NSURLRequest *)request
+{
+	return nil;
+}
+
+- (void)connectionDidFinishDownloading:(NSURLConnection *)connection destinationURL:(NSURL *)destinationURL
+{
+	self.state = AWSURLSessionTaskStateCompleted;
+	[self.delegate task:self didCompleteWithError:nil];
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
 	self.response = response;
@@ -328,11 +392,13 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+	self.state = AWSURLSessionTaskStateCompleted;
 	[self.delegate task:self didCompleteWithError:error];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+	self.state = AWSURLSessionTaskStateCompleted;
 	[self.delegate task:self didCompleteWithError:nil];
 }
 
@@ -379,6 +445,7 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 
 - (void)connectionDidFinishDownloading:(NSURLConnection *)connection destinationURL:(NSURL *)destinationURL
 {
+	[super connectionDidFinishDownloading:connection destinationURL:destinationURL];
 	[self.delegate downloadTask:self didFinishDownloadingToURL:destinationURL];
 }
 
