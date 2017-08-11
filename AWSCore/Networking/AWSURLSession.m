@@ -7,6 +7,7 @@
 //
 
 #import "AWSURLSession.h"
+#import "AWSSystemInfo.h"
 #import <stdlib.h>
 
 const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
@@ -53,6 +54,7 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 @property (readonly, retain) NSURLConnection *connection;
 @property (copy) NSURLResponse *response;
 @property (assign) AWSURLSessionTaskState state;
+@property (copy) NSURLRequest *currentRequest;
 
 - (instancetype)initWithRequest:(NSURLRequest *)request;
 
@@ -312,6 +314,8 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 
 @implementation AWSURLSessionTask
 
+@synthesize currentRequest = _currentRequest;
+
 - (instancetype)initWithRequest:(NSURLRequest *)request
 {
 	self = [super init];
@@ -327,12 +331,24 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 
 - (NSURLRequest *)originalRequest
 {
-	return self.connection.originalRequest;
+	NSURLConnection *connection = self.connection;
+	return AWSSystemInfo.isMountainLionOrGreater ? connection.originalRequest : self.currentRequest;
 }
 
 - (NSURLRequest *)currentRequest
 {
-	return self.connection.currentRequest;
+	return AWSSystemInfo.isMountainLionOrGreater ? self.connection.currentRequest : _currentRequest;
+}
+
+- (void)setCurrentRequest:(NSURLRequest *)currentRequest
+{
+	@synchronized (self)
+	{
+		if (!AWSSystemInfo.isMountainLionOrGreater && currentRequest != _currentRequest)
+		{
+			_currentRequest = [currentRequest copy];
+		}
+	}
 }
 
 - (void)cancel
@@ -363,6 +379,12 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 }
 
 #pragma mark - NSURLConnectionDelegate
+
+- (nullable NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(nullable NSURLResponse *)response
+{
+	self.currentRequest = request;
+	return request;
+}
 
 - (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection
 {
