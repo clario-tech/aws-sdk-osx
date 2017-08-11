@@ -168,7 +168,6 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
     dispatch_once(&predicate, ^{
         NSString *queueName = [[NSString alloc] initWithFormat:@"%@.trash", AWSTMDiskCachePrefix];
         trashQueue = dispatch_queue_create([queueName UTF8String], DISPATCH_QUEUE_SERIAL);
-        dispatch_set_target_queue(trashQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0));
     });
     
     return trashQueue;
