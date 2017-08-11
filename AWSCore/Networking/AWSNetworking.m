@@ -121,16 +121,18 @@ NSString *const AWSNetworkingErrorDomain = @"com.amazonaws.AWSNetworkingErrorDom
 
 - (NSURL *)URL {
     // You can overwrite the URL by providing a full URL in URLString.
-    NSURL *fullURL = [NSURL URLWithString:self.URLString];
-    if ([fullURL.scheme isEqualToString:@"http"]
-        || [fullURL.scheme isEqualToString:@"https"]) {
-        NSMutableDictionary *headers = [self.headers mutableCopy];
-        headers[@"Host"] = [fullURL host];
-        self.headers = headers;
-        return fullURL;
-    }
-
-    if (!self.URLString) {
+	if (self.URLString != nil)
+	{
+		NSURL *fullURL = [NSURL URLWithString:self.URLString];
+		if ([fullURL.scheme isEqualToString:@"http"]
+			|| [fullURL.scheme isEqualToString:@"https"]) {
+			NSMutableDictionary *headers = [self.headers mutableCopy];
+			headers[@"Host"] = [fullURL host];
+			self.headers = headers;
+			return fullURL;
+		}
+	}
+	else {
         return self.baseURL;
     }
 
