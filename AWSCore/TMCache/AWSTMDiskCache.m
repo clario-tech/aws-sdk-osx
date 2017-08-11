@@ -18,6 +18,8 @@
     #define TMCacheEndBackgroundTask()
 #endif
 
+#import "AWSSystemInfo.h"
+
 NSString * const AWSTMDiskCachePrefix = @"com.tumblr.TMDiskCache";
 NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
@@ -231,6 +233,11 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 
 #pragma mark - Private Queue Methods -
 
+- (NSURLResourceKey)fileAllocatedSizeURLResourceKey
+{
+	return AWSSystemInfo.isLionOrGreater ? NSURLTotalFileAllocatedSizeKey : NSURLFileAllocatedSizeKey;
+}
+
 - (BOOL)createCacheDirectory
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:[_cacheURL path]])
@@ -249,7 +256,8 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
 - (void)initializeDiskProperties
 {
     NSUInteger byteCount = 0;
-    NSArray *keys = @[ NSURLContentModificationDateKey, NSURLTotalFileAllocatedSizeKey ];
+	const NSURLResourceKey fileAllocatedSizeKey = [self fileAllocatedSizeURLResourceKey];
+    NSArray *keys = @[ NSURLContentModificationDateKey, fileAllocatedSizeKey ];
 
     NSError *error = nil;
     NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:_cacheURL
@@ -269,7 +277,7 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
         if (date && key)
             [_dates setObject:date forKey:key];
 
-        NSNumber *fileSize = [dictionary objectForKey:NSURLTotalFileAllocatedSizeKey];
+        NSNumber *fileSize = [dictionary objectForKey:fileAllocatedSizeKey];
         if (fileSize) {
             [_sizes setObject:fileSize forKey:key];
             byteCount += [fileSize unsignedIntegerValue];
@@ -485,10 +493,13 @@ NSString * const AWSTMDiskCacheSharedName = @"TMDiskCacheShared";
             [strongSelf setFileModificationDate:now forURL:fileURL];
 
             NSError *error = nil;
-            NSDictionary *values = [fileURL resourceValuesForKeys:@[ NSURLTotalFileAllocatedSizeKey ] error:&error];
+			
+			const NSURLResourceKey fileAllocatedSizeKey = [self fileAllocatedSizeURLResourceKey];
+			
+            NSDictionary *values = [fileURL resourceValuesForKeys:@[ fileAllocatedSizeKey ] error:&error];
             TMDiskCacheError(error);
 
-            NSNumber *diskFileSize = [values objectForKey:NSURLTotalFileAllocatedSizeKey];
+            NSNumber *diskFileSize = [values objectForKey:fileAllocatedSizeKey];
             if (diskFileSize) {
                 NSNumber *oldEntry = [strongSelf->_sizes objectForKey:key];
                 
