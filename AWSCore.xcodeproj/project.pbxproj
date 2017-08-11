@@ -230,6 +230,8 @@
 		D82EE8381F3A0FC000BC3431 /* AWSJSONSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = D82EE8351F3A0FC000BC3431 /* AWSJSONSerialization.h */; };
 		D82EE8391F3A0FC000BC3431 /* AWSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EE8361F3A0FC000BC3431 /* AWSJSONSerialization.m */; };
 		D82EE83A1F3A0FC000BC3431 /* AWSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EE8361F3A0FC000BC3431 /* AWSJSONSerialization.m */; };
+		D82EE83E1F3DDF5B00BC3431 /* AWSSystemInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = D82EE83C1F3DDF5B00BC3431 /* AWSSystemInfo.h */; };
+		D82EE8401F3DE13C00BC3431 /* AWSSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EE83D1F3DDF5B00BC3431 /* AWSSystemInfo.m */; };
 		D84E88631F38C95C00ECD077 /* AWSURLSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D84E885F1F38C95C00ECD077 /* AWSURLSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D84E88641F38C95C00ECD077 /* AWSURLSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D84E885F1F38C95C00ECD077 /* AWSURLSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D84E88651F38C95C00ECD077 /* AWSURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D84E88601F38C95C00ECD077 /* AWSURLSession.m */; };
@@ -686,6 +688,8 @@
 		D82EE8351F3A0FC000BC3431 /* AWSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSJSONSerialization.h; sourceTree = "<group>"; };
 		D82EE8361F3A0FC000BC3431 /* AWSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSJSONSerialization.m; sourceTree = "<group>"; };
 		D82EE83B1F3A109200BC3431 /* AWSJSONExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AWSJSONExtensions.h; sourceTree = "<group>"; };
+		D82EE83C1F3DDF5B00BC3431 /* AWSSystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSSystemInfo.h; sourceTree = "<group>"; };
+		D82EE83D1F3DDF5B00BC3431 /* AWSSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSSystemInfo.m; sourceTree = "<group>"; };
 		D84E885F1F38C95C00ECD077 /* AWSURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSURLSession.h; sourceTree = "<group>"; };
 		D84E88601F38C95C00ECD077 /* AWSURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSURLSession.m; sourceTree = "<group>"; };
 		D84E88611F38C95C00ECD077 /* AWSURLSessionConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSURLSessionConfiguration.h; sourceTree = "<group>"; };
@@ -952,6 +956,8 @@
 				D82EE8351F3A0FC000BC3431 /* AWSJSONSerialization.h */,
 				D82EE8361F3A0FC000BC3431 /* AWSJSONSerialization.m */,
 				D82EE83B1F3A109200BC3431 /* AWSJSONExtensions.h */,
+				D82EE83C1F3DDF5B00BC3431 /* AWSSystemInfo.h */,
+				D82EE83D1F3DDF5B00BC3431 /* AWSSystemInfo.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -1133,6 +1139,7 @@
 				CEA0CA4D1B0187640061508B /* AWSBolts.h in Headers */,
 				CE08A0831B02B4C40000ED1F /* AWSTMMemoryCache.h in Headers */,
 				CEA0CA491B0187640061508B /* AWSTask.h in Headers */,
+				D82EE83E1F3DDF5B00BC3431 /* AWSSystemInfo.h in Headers */,
 				CEA0CA4B1B0187640061508B /* AWSTaskCompletionSource.h in Headers */,
 				CEA0CA471B0187640061508B /* AWSExecutor.h in Headers */,
 				CEA589641B02B051009901A6 /* AWSGZIP.h in Headers */,
@@ -1565,6 +1572,7 @@
 				D8D1A4D01F30CE98008740CA /* AWSURLRequestRetryHandler.m in Sources */,
 				D8D1A4D11F30CE98008740CA /* AWSSTSModel.m in Sources */,
 				D82EE8341F39B0EA00BC3431 /* AWSURLSession.m in Sources */,
+				D82EE8401F3DE13C00BC3431 /* AWSSystemInfo.m in Sources */,
 				D8D1A4D21F30CE98008740CA /* AWSFMResultSet.m in Sources */,
 				D8D1A4D31F30CE98008740CA /* NSObject+AWSMTLComparisonAdditions.m in Sources */,
 				D8D1A4D41F30CE98008740CA /* NSArray+AWSMTLManipulationAdditions.m in Sources */,

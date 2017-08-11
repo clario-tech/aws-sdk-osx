@@ -8,6 +8,7 @@
 
 #import "AWSJSONSerialization.h"
 #import "AWSJSONExtensions.h"
+#import "AWSSystemInfo.h"
 
 @implementation AWSJSONSerialization
 
@@ -20,12 +21,19 @@
 {
 	NSData *result = nil;
 	
-	if ([[self JSONCompatibleClasses] containsObject:[obj class]])
+	if (AWSSystemInfo.isLionOrGreater)
 	{
-		NSString *JSONString = [obj JSONString];
-		if (JSONString != nil)
+		result = [NSJSONSerialization dataWithJSONObject:obj options:(NSJSONWritingOptions)opt error:error];
+	}
+	else
+	{
+		if ([[self JSONCompatibleClasses] containsObject:[obj class]])
 		{
-			result = [JSONString dataUsingEncoding:NSUTF8StringEncoding];
+			NSString *JSONString = [obj JSONString];
+			if (JSONString != nil)
+			{
+				result = [JSONString dataUsingEncoding:NSUTF8StringEncoding];
+			}
 		}
 	}
 	
@@ -34,21 +42,38 @@
 
 + (BOOL)isValidJSONObject:(id)obj
 {
-	return [[self JSONCompatibleClasses] containsObject:[obj class]] && [obj JSONString] != nil;
+	BOOL result = NO;
+	
+	if (AWSSystemInfo.isLionOrGreater)
+	{
+		result = [NSJSONSerialization isValidJSONObject:obj];
+	}
+	else
+	{
+		result = [[self JSONCompatibleClasses] containsObject:[obj class]] && [obj JSONString] != nil;
+	}
+	
+	return result;
 }
 
-+ (nullable id)JSONObjectWithData:(NSData *)data options:(AWSJSONWritingOptions)opt error:(NSError **)error
++ (nullable id)JSONObjectWithData:(NSData *)data options:(AWSJSONReadingOptions)opt error:(NSError **)error
 {
 	id result = nil;
-	
-	NSString *JSONString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	if (JSONString != nil)
+	if (AWSSystemInfo.isLionOrGreater)
 	{
-		result = [NSDictionary dictionaryWithJSONString:JSONString];
-		
-		if (result == nil)
+		result = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)opt error:error];
+	}
+	else
+	{
+		NSString *JSONString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		if (JSONString != nil)
 		{
-			result = [NSArray arrayWithJSONString:JSONString];
+			result = [NSDictionary dictionaryWithJSONString:JSONString];
+			
+			if (result == nil)
+			{
+				result = [NSArray arrayWithJSONString:JSONString];
+			}
 		}
 	}
 	
