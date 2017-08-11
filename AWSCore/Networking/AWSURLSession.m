@@ -345,10 +345,10 @@ const int64_t AWSURLSessionTransferSizeUnknown = -1LL;
 {
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
 	{
-		[self.connection start];
-		self.state = AWSURLSessionTaskStateRunning;
 		NSRunLoop *runLoop = NSRunLoop.currentRunLoop;
 		[self.connection scheduleInRunLoop:runLoop forMode:NSDefaultRunLoopMode];
+		[self.connection start];
+		self.state = AWSURLSessionTaskStateRunning;
 		
 		while (self.state == AWSURLSessionTaskStateRunning)
 		{
