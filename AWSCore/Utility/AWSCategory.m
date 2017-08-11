@@ -300,8 +300,8 @@ static NSTimeInterval _clockskew = 0.0;
 }
 
 - (NSString *)aws_decodeURLEncoding {
-    NSString *result = [self stringByRemovingPercentEncoding];
-    return result?result:self;
+	NSString *result = (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault, (CFStringRef)self, CFSTR(""), kCFStringEncodingUTF8));
+    return result ? result : self;
 }
 
 - (NSString *)aws_md5String {
