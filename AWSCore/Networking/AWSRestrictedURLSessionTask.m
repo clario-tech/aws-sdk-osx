@@ -116,13 +116,11 @@
 
 - (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection
 {
-	NSLog(@"should use credentials storage - set to NO");
 	return NO;
 }
 
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
-	NSLog(@"canAuthenticateAgainstProtectionSpace - set to YES");
 	return YES;
 }
 
@@ -133,34 +131,29 @@
 
 - (void)connectionDidFinishDownloading:(NSURLConnection *)connection destinationURL:(NSURL *)destinationURL
 {
-	NSLog(@"connectionDidFinishDownloading, destination url - %@", destinationURL);
 	self.state = AWSURLSessionTaskStateCompleted;
 	[self.delegate task:self didCompleteWithError:nil];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-	NSLog(@"Did receive response - %@", response);
 	self.response = response;
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	NSLog(@"connection didFailWithError - %@", error);
 	self.state = AWSURLSessionTaskStateCompleted;
 	[self.delegate task:self didCompleteWithError:error];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	NSLog(@"connection didFinish loading");
 	self.state = AWSURLSessionTaskStateCompleted;
 	[self.delegate task:self didCompleteWithError:nil];
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 {
-	NSLog(@"Did send - %li, total sent - %li", (long)bytesWritten, (long)totalBytesWritten);
 	[self.delegate task:self didSendBodyData:bytesWritten totalBytesSent:totalBytesWritten];
 }
 
