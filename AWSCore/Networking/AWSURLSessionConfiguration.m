@@ -21,7 +21,7 @@
 @synthesize timeoutIntervalForResource = _timeoutIntervalForResource;
 @synthesize URLCache = _URLCache;
 
-+ (AWSURLSessionConfiguration *)defaultSessionConfiguration
++ (instancetype)defaultSessionConfiguration
 {
 	return [[self class] new];
 }
@@ -30,7 +30,6 @@
 {
 	AWSURLSessionConfiguration *configuration = [[self class] new];
 	configuration.identifier = identifier;
-	
 	return configuration;
 }
 

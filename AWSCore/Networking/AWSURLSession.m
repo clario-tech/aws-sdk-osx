@@ -50,7 +50,24 @@
 	{
 		if ([[self class] URLSessionSystemAPIAvailable])
 		{
-			NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+			NSURLSessionConfiguration *sessionConfiguration = nil;
+			NSString *identifier = configuration.identifier;
+			if (identifier)
+			{
+				if ([NSURLSessionConfiguration respondsToSelector:@selector(backgroundSessionConfigurationWithIdentifier:)])
+				{
+					sessionConfiguration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:identifier];
+				}
+				else
+				{
+					sessionConfiguration = [NSURLSessionConfiguration backgroundSessionConfiguration:identifier];
+				}
+			}
+			else
+			{
+				[NSURLSessionConfiguration defaultSessionConfiguration];
+			}
+			
 			sessionConfiguration.URLCache = configuration.URLCache;
 			
 			if (configuration.timeoutIntervalForRequest > 0)

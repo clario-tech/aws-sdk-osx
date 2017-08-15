@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AWSURLSessionConfiguration : NSObject<NSCopying, AWSURLSessionConfiguration>
 
-@property (class, readonly, strong) AWSURLSessionConfiguration *defaultSessionConfiguration;
++ (instancetype)defaultSessionConfiguration;
 
 + (instancetype)backgroundSessionConfigurationWithIdentifier:(NSString *)identifier;
 
