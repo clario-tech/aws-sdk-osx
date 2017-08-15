@@ -22,6 +22,7 @@
 #import "AWSBolts.h"
 #import "AWSURLSessionConfiguration.h"
 #import "AWSURLSession.h"
+#import "AWSSystemInfo.h"
 
 #pragma mark - AWSURLSessionManagerDelegate
 
@@ -72,7 +73,7 @@ typedef NS_ENUM(NSInteger, AWSURLSessionTaskType) {
 
 @interface AWSNetworkingRequest()
 
-@property (nonatomic, strong) AWSURLSessionTask *task;
+@property (nonatomic, strong) id<AWSURLSessionTask> task;
 
 @end
 
@@ -80,7 +81,7 @@ typedef NS_ENUM(NSInteger, AWSURLSessionTaskType) {
 
 //const int64_t AWSMinimumDownloadTaskSize = 1000000;
 
-@interface AWSURLSessionManager()
+@interface AWSURLSessionManager()<NSURLSessionDelegate>
 
 @property (nonatomic, strong) AWSURLSession *session;
 @property (nonatomic, strong) AWSSynchronizedMutableDictionary *sessionManagerDelegates;
@@ -234,7 +235,7 @@ typedef NS_ENUM(NSInteger, AWSURLSessionTaskType) {
         
         if (delegate.request.task) {
             [self.sessionManagerDelegates setObject:delegate
-                                             forKey:@(((AWSURLSessionTask *)delegate.request.task).taskIdentifier)];
+                                             forKey:@(((id<AWSURLSessionTask>)delegate.request.task).taskIdentifier)];
             [delegate.request.task resume];
         } else {
             AWSLogError(@"Invalid AWSURLSessionTaskType.");
@@ -257,7 +258,7 @@ typedef NS_ENUM(NSInteger, AWSURLSessionTaskType) {
 
 #pragma mark - AWSURLSessionTaskDelegate
 
-- (void)URLSession:(AWSURLSession *)session task:(AWSURLSessionTask *)sessionTask didCompleteWithError:(NSError *)error {
+- (void)URLSession:(id<AWSURLSession>)session task:(id<AWSURLSessionTask>)sessionTask didCompleteWithError:(NSError *)error {
     [[[AWSTask taskWithResult:nil] continueWithSuccessBlock:^id(AWSTask *task) {
         AWSURLSessionManagerDelegate *delegate = [self.sessionManagerDelegates objectForKey:@(sessionTask.taskIdentifier)];
         
@@ -415,12 +416,12 @@ typedef NS_ENUM(NSInteger, AWSURLSessionTaskType) {
     }];
 }
 
-- (void)URLSession:(AWSURLSession *)session task:(AWSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
+- (void)URLSession:(id<AWSURLSession>)session task:(id<AWSURLSessionTask>)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
     AWSURLSessionManagerDelegate *delegate = [self.sessionManagerDelegates objectForKey:@(task.taskIdentifier)];
     AWSNetworkingUploadProgressBlock uploadProgress = delegate.request.uploadProgress;
     if (uploadProgress) {
         
-        AWSURLSessionTask *sessionTask = delegate.request.task;
+        id<AWSURLSessionTask> sessionTask = delegate.request.task;
         int64_t originalDataLength = [[[sessionTask.originalRequest allHTTPHeaderFields] objectForKey:@"x-amz-decoded-content-length"] longLongValue];
         NSInputStream *inputStream = (AWSS3ChunkedEncodingInputStream *)sessionTask.originalRequest.HTTPBodyStream;
         if ([inputStream isKindOfClass:[AWSS3ChunkedEncodingInputStream class]]) {
@@ -440,7 +441,7 @@ typedef NS_ENUM(NSInteger, AWSURLSessionTaskType) {
 
 #pragma mark - AWSURLSessionDataDelegate
 
-- (void)URLSession:(AWSURLSession *)session dataTask:(AWSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response
+- (void)URLSession:(id<AWSURLSession>)session dataTask:(id<AWSURLSessionDataTask>)dataTask didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(AWSURLSessionResponseDisposition disposition))completionHandler {
     AWSURLSessionManagerDelegate *delegate = [self.sessionManagerDelegates objectForKey:@(dataTask.taskIdentifier)];
     
@@ -526,7 +527,7 @@ typedef NS_ENUM(NSInteger, AWSURLSessionTaskType) {
     completionHandler(AWSURLSessionResponseAllow);
 }
 
-- (void)URLSession:(AWSURLSession *)session dataTask:(AWSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
+- (void)URLSession:(id<AWSURLSession>)session dataTask:(id<AWSURLSessionDataTask>)dataTask didReceiveData:(NSData *)data {
     AWSURLSessionManagerDelegate *delegate = [self.sessionManagerDelegates objectForKey:@(dataTask.taskIdentifier)];
     
     if (delegate.responseFilehandle) {

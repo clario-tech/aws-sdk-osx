@@ -177,7 +177,7 @@ NSString *const AWSNetworkingErrorDomain = @"com.amazonaws.AWSNetworkingErrorDom
 
 @interface AWSNetworkingRequest()
 
-@property (nonatomic, strong) AWSURLSessionTask *task;
+@property (nonatomic, strong) id<AWSURLSessionTask> task;
 @property (nonatomic, assign, getter = isCancelled) BOOL cancelled;
 
 @end
@@ -226,7 +226,7 @@ NSString *const AWSNetworkingErrorDomain = @"com.amazonaws.AWSNetworkingErrorDom
     }
 }
 
-- (void)setTask:(AWSURLSessionTask *)task {
+- (void)setTask:(id<AWSURLSessionTask>)task {
     @synchronized(self) {
         if (!_cancelled) {
             _task = task;

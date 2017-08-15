@@ -17,6 +17,9 @@
 @implementation AWSURLSessionConfiguration
 
 @synthesize identifier = _identifier;
+@synthesize timeoutIntervalForRequest = _timeoutIntervalForRequest;
+@synthesize timeoutIntervalForResource = _timeoutIntervalForResource;
+@synthesize URLCache = _URLCache;
 
 + (AWSURLSessionConfiguration *)defaultSessionConfiguration
 {
@@ -35,6 +38,9 @@
 {
 	AWSURLSessionConfiguration *result = [[[self class] allocWithZone:zone] init];
 	result.identifier = self.identifier;
+	result.timeoutIntervalForResource = self.timeoutIntervalForResource;
+	result.timeoutIntervalForRequest = self.timeoutIntervalForRequest;
+	result.URLCache = self.URLCache;
 	
 	return result;
 }

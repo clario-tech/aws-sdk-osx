@@ -232,6 +232,16 @@
 		D82EE83A1F3A0FC000BC3431 /* AWSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EE8361F3A0FC000BC3431 /* AWSJSONSerialization.m */; };
 		D82EE83E1F3DDF5B00BC3431 /* AWSSystemInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = D82EE83C1F3DDF5B00BC3431 /* AWSSystemInfo.h */; };
 		D82EE8401F3DE13C00BC3431 /* AWSSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EE83D1F3DDF5B00BC3431 /* AWSSystemInfo.m */; };
+		D82EE8491F432A8F00BC3431 /* AWSRestrictedURLSessionTask.h in Headers */ = {isa = PBXBuildFile; fileRef = D82EE8471F432A8F00BC3431 /* AWSRestrictedURLSessionTask.h */; };
+		D82EE84A1F432A8F00BC3431 /* AWSRestrictedURLSessionTask.h in Headers */ = {isa = PBXBuildFile; fileRef = D82EE8471F432A8F00BC3431 /* AWSRestrictedURLSessionTask.h */; };
+		D82EE84B1F432A8F00BC3431 /* AWSRestrictedURLSessionTask.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EE8481F432A8F00BC3431 /* AWSRestrictedURLSessionTask.m */; };
+		D82EE84C1F432A8F00BC3431 /* AWSRestrictedURLSessionTask.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EE8481F432A8F00BC3431 /* AWSRestrictedURLSessionTask.m */; };
+		D82EE84D1F432BD500BC3431 /* AWSURLSessionProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = D82EE8451F43247900BC3431 /* AWSURLSessionProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D82EE84E1F432BD800BC3431 /* AWSURLSessionProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = D82EE8451F43247900BC3431 /* AWSURLSessionProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D82EE8511F432DBC00BC3431 /* AWSRestrictedURLSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D82EE84F1F432DBC00BC3431 /* AWSRestrictedURLSession.h */; };
+		D82EE8521F432DBC00BC3431 /* AWSRestrictedURLSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D82EE84F1F432DBC00BC3431 /* AWSRestrictedURLSession.h */; };
+		D82EE8531F432DBC00BC3431 /* AWSRestrictedURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EE8501F432DBC00BC3431 /* AWSRestrictedURLSession.m */; };
+		D82EE8541F432DBC00BC3431 /* AWSRestrictedURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EE8501F432DBC00BC3431 /* AWSRestrictedURLSession.m */; };
 		D84E88631F38C95C00ECD077 /* AWSURLSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D84E885F1F38C95C00ECD077 /* AWSURLSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D84E88641F38C95C00ECD077 /* AWSURLSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D84E885F1F38C95C00ECD077 /* AWSURLSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D84E88651F38C95C00ECD077 /* AWSURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D84E88601F38C95C00ECD077 /* AWSURLSession.m */; };
@@ -690,6 +700,11 @@
 		D82EE83B1F3A109200BC3431 /* AWSJSONExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AWSJSONExtensions.h; sourceTree = "<group>"; };
 		D82EE83C1F3DDF5B00BC3431 /* AWSSystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSSystemInfo.h; sourceTree = "<group>"; };
 		D82EE83D1F3DDF5B00BC3431 /* AWSSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSSystemInfo.m; sourceTree = "<group>"; };
+		D82EE8451F43247900BC3431 /* AWSURLSessionProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AWSURLSessionProtocols.h; sourceTree = "<group>"; };
+		D82EE8471F432A8F00BC3431 /* AWSRestrictedURLSessionTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSRestrictedURLSessionTask.h; sourceTree = "<group>"; };
+		D82EE8481F432A8F00BC3431 /* AWSRestrictedURLSessionTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSRestrictedURLSessionTask.m; sourceTree = "<group>"; };
+		D82EE84F1F432DBC00BC3431 /* AWSRestrictedURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSRestrictedURLSession.h; sourceTree = "<group>"; };
+		D82EE8501F432DBC00BC3431 /* AWSRestrictedURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSRestrictedURLSession.m; sourceTree = "<group>"; };
 		D84E885F1F38C95C00ECD077 /* AWSURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSURLSession.h; sourceTree = "<group>"; };
 		D84E88601F38C95C00ECD077 /* AWSURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSURLSession.m; sourceTree = "<group>"; };
 		D84E88611F38C95C00ECD077 /* AWSURLSessionConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSURLSessionConfiguration.h; sourceTree = "<group>"; };
@@ -887,14 +902,12 @@
 		BDF5580F1AB371AB0067F4F1 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				D84E885F1F38C95C00ECD077 /* AWSURLSession.h */,
-				D84E88601F38C95C00ECD077 /* AWSURLSession.m */,
-				D84E88611F38C95C00ECD077 /* AWSURLSessionConfiguration.h */,
-				D84E88621F38C95C00ECD077 /* AWSURLSessionConfiguration.m */,
+				D82EE8461F4328C300BC3431 /* AWSURLSession */,
 				BDF558101AB371AB0067F4F1 /* AWSNetworking.h */,
 				BDF558111AB371AB0067F4F1 /* AWSNetworking.m */,
 				BDF558121AB371AB0067F4F1 /* AWSURLSessionManager.h */,
 				BDF558131AB371AB0067F4F1 /* AWSURLSessionManager.m */,
+				D82EE8451F43247900BC3431 /* AWSURLSessionProtocols.h */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1115,6 +1128,21 @@
 			path = XMLDictionary;
 			sourceTree = "<group>";
 		};
+		D82EE8461F4328C300BC3431 /* AWSURLSession */ = {
+			isa = PBXGroup;
+			children = (
+				D84E885F1F38C95C00ECD077 /* AWSURLSession.h */,
+				D84E88601F38C95C00ECD077 /* AWSURLSession.m */,
+				D84E88611F38C95C00ECD077 /* AWSURLSessionConfiguration.h */,
+				D84E88621F38C95C00ECD077 /* AWSURLSessionConfiguration.m */,
+				D82EE8471F432A8F00BC3431 /* AWSRestrictedURLSessionTask.h */,
+				D82EE8481F432A8F00BC3431 /* AWSRestrictedURLSessionTask.m */,
+				D82EE84F1F432DBC00BC3431 /* AWSRestrictedURLSession.h */,
+				D82EE8501F432DBC00BC3431 /* AWSRestrictedURLSession.m */,
+			);
+			name = AWSURLSession;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1128,6 +1156,7 @@
 				CE08A0B61B02B5B10000ED1F /* AWSMTLModel.h in Headers */,
 				CE08A0BC1B02B5B10000ED1F /* NSArray+AWSMTLManipulationAdditions.h in Headers */,
 				CE08A0BE1B02B5B10000ED1F /* NSDictionary+AWSMTLManipulationAdditions.h in Headers */,
+				D82EE8491F432A8F00BC3431 /* AWSRestrictedURLSessionTask.h in Headers */,
 				CE08A0B01B02B5B10000ED1F /* AWSMTLJSONAdapter.h in Headers */,
 				CE08A0C41B02B5B10000ED1F /* NSValueTransformer+AWSMTLInversionAdditions.h in Headers */,
 				CE08A0B41B02B5B10000ED1F /* AWSMTLModel+NSCoding.h in Headers */,
@@ -1147,6 +1176,7 @@
 				BDF558E01AB371AD0067F4F1 /* AWSSTS.h in Headers */,
 				CEA589711B02B192009901A6 /* AWSUICKeyChainStore.h in Headers */,
 				CEB05B9C1B0190DC0063B44C /* AWSXMLDictionary.h in Headers */,
+				D82EE8511F432DBC00BC3431 /* AWSRestrictedURLSession.h in Headers */,
 				BDF558EB1AB371AE0067F4F1 /* AWSSynchronizedMutableDictionary.h in Headers */,
 				CEE7DE611AC1DFB10095C4B7 /* AWSSTSService.h in Headers */,
 				BDF558D91AB371AD0067F4F1 /* AWSURLResponseSerialization.h in Headers */,
@@ -1154,6 +1184,7 @@
 				BDF558391AB371AB0067F4F1 /* AWSIdentityProvider.h in Headers */,
 				BDF558DF1AB371AD0067F4F1 /* AWSServiceEnum.h in Headers */,
 				BDF5583D1AB371AB0067F4F1 /* AWSCognitoIdentity.h in Headers */,
+				D82EE84D1F432BD500BC3431 /* AWSURLSessionProtocols.h in Headers */,
 				BDF558DD1AB371AD0067F4F1 /* AWSService.h in Headers */,
 				BDF5583F1AB371AB0067F4F1 /* AWSCognitoIdentityModel.h in Headers */,
 				BDF558D71AB371AD0067F4F1 /* AWSURLRequestSerialization.h in Headers */,
@@ -1217,6 +1248,7 @@
 				D8D1A53B1F30CE98008740CA /* AWSFMResultSet.h in Headers */,
 				D8D1A53C1F30CE98008740CA /* AWSSTS.h in Headers */,
 				D8D1A53D1F30CE98008740CA /* AWSUICKeyChainStore.h in Headers */,
+				D82EE84A1F432A8F00BC3431 /* AWSRestrictedURLSessionTask.h in Headers */,
 				D8D1A53E1F30CE98008740CA /* AWSXMLDictionary.h in Headers */,
 				D8D1A53F1F30CE98008740CA /* AWSSynchronizedMutableDictionary.h in Headers */,
 				D8D1A5401F30CE98008740CA /* AWSSTSService.h in Headers */,
@@ -1227,7 +1259,9 @@
 				D8D1A5451F30CE98008740CA /* AWSCognitoIdentity.h in Headers */,
 				D8D1A5461F30CE98008740CA /* AWSService.h in Headers */,
 				D8D1A5471F30CE98008740CA /* AWSCognitoIdentityModel.h in Headers */,
+				D82EE8521F432DBC00BC3431 /* AWSRestrictedURLSession.h in Headers */,
 				D8D1A5481F30CE98008740CA /* AWSURLRequestSerialization.h in Headers */,
+				D82EE84E1F432BD800BC3431 /* AWSURLSessionProtocols.h in Headers */,
 				D8D1A5491F30CE98008740CA /* AWSFMDatabasePool.h in Headers */,
 				D8D1A54A1F30CE98008740CA /* AWSFMDatabaseAdditions.h in Headers */,
 				D8D1A54B1F30CE98008740CA /* AWSSignature.h in Headers */,
@@ -1507,6 +1541,7 @@
 				BDB73D5C1B1D3DF500717559 /* AWSCognitoIdentityResources.m in Sources */,
 				BDF558E81AB371AE0067F4F1 /* AWSLogging.m in Sources */,
 				CE08A0B11B02B5B10000ED1F /* AWSMTLJSONAdapter.m in Sources */,
+				D82EE8531F432DBC00BC3431 /* AWSRestrictedURLSession.m in Sources */,
 				BDF558381AB371AB0067F4F1 /* AWSCredentialsProvider.m in Sources */,
 				CEA589721B02B192009901A6 /* AWSUICKeyChainStore.m in Sources */,
 				BDF558DC1AB371AD0067F4F1 /* AWSValidation.m in Sources */,
@@ -1519,6 +1554,7 @@
 				CE08A0BB1B02B5B10000ED1F /* AWSMTLValueTransformer.m in Sources */,
 				BDF558DA1AB371AD0067F4F1 /* AWSURLResponseSerialization.m in Sources */,
 				D84E88651F38C95C00ECD077 /* AWSURLSession.m in Sources */,
+				D82EE84B1F432A8F00BC3431 /* AWSRestrictedURLSessionTask.m in Sources */,
 				BDF558E61AB371AD0067F4F1 /* AWSCategory.m in Sources */,
 				BDF558D01AB371AD0067F4F1 /* AWSNetworking.m in Sources */,
 				CE08A0BF1B02B5B10000ED1F /* NSDictionary+AWSMTLManipulationAdditions.m in Sources */,
@@ -1598,11 +1634,13 @@
 				D8D1A4E71F30CE98008740CA /* AWSURLResponseSerialization.m in Sources */,
 				D8D1A4E81F30CE98008740CA /* AWSCategory.m in Sources */,
 				D8D1A4E91F30CE98008740CA /* AWSNetworking.m in Sources */,
+				D82EE8541F432DBC00BC3431 /* AWSRestrictedURLSession.m in Sources */,
 				D8D1A4EA1F30CE98008740CA /* NSDictionary+AWSMTLManipulationAdditions.m in Sources */,
 				D8D1A4EB1F30CE98008740CA /* AWSMTLManagedObjectAdapter.m in Sources */,
 				D8D1A4EC1F30CE98008740CA /* NSValueTransformer+AWSMTLPredefinedTransformerAdditions.m in Sources */,
 				D8D1A4ED1F30CE98008740CA /* AWSXMLDictionary.m in Sources */,
 				D8D1A4EE1F30CE98008740CA /* AWSFMDatabase.m in Sources */,
+				D82EE84C1F432A8F00BC3431 /* AWSRestrictedURLSessionTask.m in Sources */,
 				D8D1A4EF1F30CE98008740CA /* AWSFMDatabaseQueue.m in Sources */,
 				D8D1A4F01F30CE98008740CA /* AWSFMDatabaseAdditions.m in Sources */,
 				D8D1A4F11F30CE98008740CA /* AWSXMLWriter.m in Sources */,

@@ -19,6 +19,7 @@
 #import "AWSTMCache.h"
 #import "AWSCategory.h"
 #import "AWSLogging.h"
+#import "AWSURLSession.h"
 #import "AWSSynchronizedMutableDictionary.h"
 
 NSUInteger const AWSS3TransferManagerMinimumPartSize = 5 * 1024 * 1024; // 5MB
@@ -186,7 +187,8 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
                            forKey:cacheKey];
         return nil;
     }] continueWithSuccessBlock:^id(AWSTask *task) {
-        if (fileSize > AWSS3TransferManagerMinimumPartSize) {
+		
+        if (fileSize > AWSS3TransferManagerMinimumPartSize && [AWSURLSession supportsMultipartUpload]) {
             return [weakSelf multipartUpload:uploadRequest fileSize:fileSize cacheKey:cacheKey];
         } else {
             return [weakSelf putObject:uploadRequest fileSize:fileSize cacheKey:cacheKey];
