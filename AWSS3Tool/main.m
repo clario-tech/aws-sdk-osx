@@ -81,6 +81,37 @@ int main(int argc, const char * argv[])
 			}
 			else if (shouldDownload)
 			{
+				AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+				AWSS3TransferManagerDownloadRequest *downloadRequest = [AWSS3TransferManagerDownloadRequest new];
+				downloadRequest.bucket = bucket;
+				downloadRequest.key = key;
+				AWSTask *download = [transferManager download:downloadRequest];
+				__block BOOL downloading = YES;
+				NSLog(@"Start downloading...");
+				[download continueWithExecutor:[AWSExecutor mainThreadExecutor] withBlock:^id(AWSTask *task)
+				{
+					if (task.result)
+					{
+						NSLog(@"Download complete. Target path - %@", [[task.result body] path]);
+					}
+					else
+					{
+						NSError *taskError = task.error;
+						if (taskError)
+						{
+							NSLog(@"Download error - %@", taskError);
+						}
+					}
+					
+					downloading = NO;
+					return nil;
+				}];
+				
+				NSRunLoop *currentRunLoop = NSRunLoop.currentRunLoop;
+				while (downloading)
+				{
+					[currentRunLoop runMode:NSDefaultRunLoopMode beforeDate:NSDate.distantFuture];
+				}
 			}
 			else
 			{
