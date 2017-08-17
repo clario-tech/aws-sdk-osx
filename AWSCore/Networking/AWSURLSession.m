@@ -80,7 +80,7 @@
 				sessionConfiguration.timeoutIntervalForResource = configuration.timeoutIntervalForResource;
 			}
 
-			_internalSession = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:(id<NSURLSessionDelegate>)self delegateQueue:queue];
+			_internalSession = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:(id<NSURLSessionDelegate>)delegate delegateQueue:queue];
 		}
 		else
 		{
