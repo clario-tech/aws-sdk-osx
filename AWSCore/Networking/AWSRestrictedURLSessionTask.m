@@ -129,12 +129,6 @@
 	return nil;
 }
 
-- (void)connectionDidFinishDownloading:(NSURLConnection *)connection destinationURL:(NSURL *)destinationURL
-{
-	self.state = AWSURLSessionTaskStateCompleted;
-	[self.delegate task:self didCompleteWithError:nil];
-}
-
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
 	self.response = response;
@@ -195,7 +189,7 @@
 
 - (void)connectionDidFinishDownloading:(NSURLConnection *)connection destinationURL:(NSURL *)destinationURL
 {
-	[super connectionDidFinishDownloading:connection destinationURL:destinationURL];
+	self.state = AWSURLSessionTaskStateCompleted;
 	[self.delegate downloadTask:self didFinishDownloadingToURL:destinationURL];
 }
 

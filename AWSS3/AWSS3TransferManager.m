@@ -188,7 +188,7 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
         return nil;
     }] continueWithSuccessBlock:^id(AWSTask *task) {
 		
-        if (fileSize > AWSS3TransferManagerMinimumPartSize && [AWSURLSession supportsMultipartUpload]) {
+        if (fileSize > AWSS3TransferManagerMinimumPartSize) {
             return [weakSelf multipartUpload:uploadRequest fileSize:fileSize cacheKey:cacheKey];
         } else {
             return [weakSelf putObject:uploadRequest fileSize:fileSize cacheKey:cacheKey];

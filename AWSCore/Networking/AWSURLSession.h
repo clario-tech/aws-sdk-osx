@@ -14,8 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AWSURLSession : NSObject<AWSURLSession>
 
-+ (BOOL)supportsMultipartUpload;
-
 + (instancetype)sessionWithConfiguration:(AWSURLSessionConfiguration *)configuration delegate:(nullable id <AWSURLSessionDelegate>)delegate delegateQueue:(nullable NSOperationQueue *)queue;
 
 @end

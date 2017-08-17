@@ -27,16 +27,6 @@
 
 @synthesize internalSession = _internalSession;
 
-+ (BOOL)URLSessionSystemAPIAvailable
-{
-	return AWSSystemInfo.isMavericksOrGreater;
-}
-
-+ (BOOL)supportsMultipartUpload
-{
-	return [self URLSessionSystemAPIAvailable];
-}
-
 + (instancetype)sessionWithConfiguration:(AWSURLSessionConfiguration *)configuration delegate:(nullable id <AWSURLSessionDelegate>)delegate delegateQueue:(nullable NSOperationQueue *)queue
 {
 	return [[self alloc] initWithConfiguration:configuration delegate:delegate delegateQueue:queue];
@@ -48,7 +38,7 @@
 	
 	if (self != nil)
 	{
-		if ([[self class] URLSessionSystemAPIAvailable])
+		if (AWSSystemInfo.isMavericksOrGreater)
 		{
 			NSURLSessionConfiguration *sessionConfiguration = nil;
 			NSString *identifier = configuration.identifier;
