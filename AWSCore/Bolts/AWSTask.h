@@ -97,7 +97,7 @@ typedef id(^AWSContinuationBlock)(AWSTask *task);
  this method will not be completed until that task is completed.
  */
 + (instancetype)taskFromExecutor:(AWSExecutor *)executor
-                       withBlock:(id (^)())block;
+                       withBlock:(id (^)(void))block;
 
 // Properties that will be set on the task once it is completed.
 

@@ -35,7 +35,7 @@
  Returns a new executor that uses the given block to execute continuations.
  @param block The block to use.
  */
-+ (instancetype)executorWithBlock:(void(^)(void(^block)()))block;
++ (instancetype)executorWithBlock:(void(^)(void(^block)(void)))block;
 
 /*!
  Returns a new executor that runs continuations on the given queue.
@@ -53,6 +53,6 @@
  Runs the given block using this executor's particular strategy.
  @param block The block to execute.
  */
-- (void)execute:(void(^)())block;
+- (void)execute:(void(^)(void))block;
 
 @end
