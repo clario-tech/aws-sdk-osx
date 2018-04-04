@@ -151,7 +151,7 @@ NSString *const AWSTaskMultipleExceptionsException = @"BFMultipleExceptionsExcep
 }
 
 + (instancetype)taskFromExecutor:(AWSExecutor *)executor
-                       withBlock:(id (^)())block {
+                       withBlock:(id (^)(AWSTask *task))block {
     return [[self taskWithResult:nil] continueWithExecutor:executor withBlock:block];
 }
 

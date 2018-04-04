@@ -863,6 +863,7 @@
 				D888ED9D1F444AE3005AD3BD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D8D1A4941F2F82CC008740CA /* Build configuration list for PBXNativeTarget "AWSS3ForMac" */ = {
 			isa = XCConfigurationList;

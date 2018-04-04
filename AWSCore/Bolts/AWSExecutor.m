@@ -78,7 +78,7 @@
     return mainThreadExecutor;
 }
 
-+ (instancetype)executorWithBlock:(void(^)(void(^block)()))block {
++ (instancetype)executorWithBlock:(void(^)(void(^block)(void)))block {
     return [[self alloc] initWithBlock:block];
 }
 
@@ -105,7 +105,7 @@
 
 #pragma mark - Execution
 
-- (void)execute:(void(^)())block {
+- (void)execute:(void(^)(void))block {
     self.block(block);
 }
 
